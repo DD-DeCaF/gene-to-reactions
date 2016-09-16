@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+import "schema/annotations.proto";
+import "google/api/annotations.proto";
+
+enum Topology {
+    LINEAR = 0;
+    CIRCULAR = 1;
+}
+
+enum Strand {
+    NONE_OR_BOTH = 0;
+    FORWARD = 1;
+    REVERSE = 2;
+}
+
+
+message DNAComponent {
+
+    // A server-generated ID for this DNA component
+    string id = 1;
+    string project_id = 2;
+
+    Topology topology = 3;
+
+    DNASequence sequence = 10;
+
+    repeated Feature features = 11;
+
+    string accession = 12;
+}
+
+
+message FeatureLocation {
+    // The start of the feature, 0-based inclusive.
+    // NOTE(lays): GFF3 is 1-based inclusive, which does not translate well to PB
+    int64 start = 2 [(v.schema).minimum.value = 0];
+
+    // The end of the feature, 0-based exclusive.
+    // NOTE(lays): GFF3 is 1-based inclusive, which does not translate well to PB
+    int64 end = 3 [(v.schema).minimum.value = 1];
+}
+
+
+message Feature {
+    //
+    //
+    // References:
+    //  - Generic Feature Format Version 3 (GFF3)
+    //    https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md
+    option (v.description) = "A feature of a DNAComponent.";
+
+    // The ID of the landmark used to establish the coordinate system for the current feature.
+    // NOTE(lays): GFF3 calls this "seqid"
+    // XXX not sure if should be used. This is the DNAComponent.
+    string reference = 1;
+
+    // The type of the feature (from GFF3 specification):
+    // This is constrained to be either:
+    //  (a) a term from the "lite" version of the Sequence Ontology - SOFA
+    //  (b) a term from the full Sequence Ontology - it must be an is_a child of sequence_feature (SO:0000110) or
+    //  (c) a SOFA or SO accession number. The latter alternative is distinguished using the syntax SO:000000.
+    string type = 2 [(v.schema).pattern = "^SO:\\d+$"];
+
+    // Indicates the ID of the feature. Unique within its DNAComponent.
+    // NOTE(lays): GFF3 stores "name" in "attributes".
+    string id = 3;
+
+    // NOTE(lays): GFF3 stores this on multiple lines. That makes aggregation easier.
+    // XXX review location.
+    repeated FeatureLocation locations = 4 [(v.schema).min_items = 1];
+
+    // Display name for the feature. This is the name to be displayed to the user.
+    // Unlike IDs, there is no requirement that the Name be unique within the reference.
+    // NOTE(lays): GFF3 stores "name" in "attributes"
+    string name = 5;
+
+    reserved "score";
+    // The score of the feature, a floating point number.
+    // NOTE(lays): not sure what this would be used for.
+    // float score = 6;
+
+    // The strand of the feature.
+    Strand strand = 7;
+
+    // For features of type "CDS", the phase indicates where the feature begins with reference to the reading frame.
+    // The phase is one of the integers 0, 1, or 2, indicating the number of bases that should be removed from the
+    // beginning of this feature to reach the first base of the next codon.
+    int32 phase = 8 [(v.schema).minimum.value = 1, (v.schema).maximum.value = 2];
+
+    // XXX(lays) for simplicity can also just be strings
+    repeated XRef xrefs = 9;
+
+    // IDs of parents of the feature.
+    repeated string parent = 10;
+
+    // A list of feature attributes in the format tag=value
+    // TODO(lays) some of the tags should/could be given their own fields.
+    // NOTE(lays): PARENT, ID and NAME are separated out into fields.
+    map<string, string> attributes = 15;
+}
+
+message XRef {
+    // e.g. BIGG:12DGR161tipp
+    // XXX(lays) "namespace" = "dbname"
+    string namespace = 1;
+
+    // XXX(lays) "value" = "accession" [+ "version"]
+    string value = 2;
+}
+
+message DNASequence {
+    string bases = 1;
+}
+
+service SequenceLibrary {
+
+    rpc CreateDNAComponent (DNAComponent) returns (DNAComponent) {
+        option (google.api.http) = { post: "/v1/components" body: "*" };
+        option (v.request).exclude.paths = "id";
+    }
+
+    rpc GetDNAComponent (GetDNAComponentRequest) returns (DNAComponent) {
+        option (google.api.http) = { get: "/v1/component/{id}" };
+    }
+
+    // NOTE(lays): just an example.
+    rpc SearchDNAComponents (SearchDNAComponentsRequest) returns (SearchDNAComponentsResponse);
+}
+
+message GetDNAComponentRequest {
+    string id = 1;
+
+}
+
+message GetFeatureRequest {
+    string id = 1;
+}
+
+message GetXrefsRequest {
+    string id = 1;
+    string feature_id = 2;
+    string namespace = 3;
+}
+
+message SearchDNAComponentsRequest {
+
+    string project_id = 1;
+
+    // string name = 2;
+    // ...
+
+    // The continuation token, which is used to page through large result sets.
+    // To get the next page of results, set this parameter to the value of
+    // `nextPageToken` from the previous response.
+    string page_token = 4;
+
+}
+
+message SearchDNAComponentsResponse {
+    repeated DNAComponent components = 1;
+
+    // The continuation token, which is used to page through large result sets.
+    // Provide this value in a subsequent request to return the next page of
+    // results. This field will be empty if there aren't any additional results.
+    string next_page_token = 2;
+}

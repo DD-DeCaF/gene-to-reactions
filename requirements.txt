@@ -1,0 +1,5 @@
+git+https://github.com/biosustain/cameo.git@devel#egg=cameo
+git+https://github.com/DD-DeCaF/camilo.git@extract-genotype#egg=camilo
+requests
+redis
+gnomic
