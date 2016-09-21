@@ -3,9 +3,7 @@ import csv
 import os
 import json
 import redis
-import logging
-logging.basicConfig()
-logger = logging.getLogger('kegg-client')
+from genotype_to_model import logger
 
 
 def find_reaction_id(row):

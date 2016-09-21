@@ -1,5 +1,9 @@
-git+https://github.com/biosustain/cameo.git@devel#egg=cameo
-git+https://github.com/DD-DeCaF/camilo.git@extract-genotype#egg=camilo
+git+https://github.com/sgalkina/cameo.git@model-modif#egg=cameo
 requests
 redis
 gnomic
+gunicorn
+gevent
+flask_script
+flask_cors
+codecov

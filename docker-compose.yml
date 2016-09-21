@@ -4,9 +4,10 @@ web:
   links:
     - redis
   ports:
-    - 8000
+    - 8000:8000
   environment:
     - PYTHONUNBUFFERED=1
+    - SETTINGS_OBJECT=genotype_to_model.settings.Default
 redis:
   image: redis
   ports:

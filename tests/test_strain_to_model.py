@@ -2,8 +2,8 @@ import unittest
 import random
 from genotype_to_model.strain_to_model import full_genotype, GenotypeChangeModel
 from cobra.manipulation.delete import find_gene_knockout_reactions
+from genotype_to_model.utils import model_by_id
 from tests.shared.mock_clients import MockKEGGClient, GENES_TO_REACTIONS
-from camilo.utils import wild_model_by_code
 
 
 def random_genes_to_knockout(model):
@@ -15,7 +15,7 @@ def check_knockout_bounds(model, gene, function):
     for reaction in find_gene_knockout_reactions(model, [gene]):
         function(reaction.lower_bound == reaction.upper_bound == 0)
 
-wild_model = wild_model_by_code('ECO')
+wild_model = model_by_id("iJO1366")
 
 
 class TestStrainToModel(unittest.TestCase):

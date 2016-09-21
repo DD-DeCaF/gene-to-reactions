@@ -1,0 +1,20 @@
+sudo: required
+language: python
+env:
+- CONDAENV=python3.4
+services:
+- docker
+before_install:
+- docker-compose -v
+- docker -v
+- docker login -e=$DOCKER_EMAIL -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+install: docker-compose up -d
+script:
+- docker-compose exec web /bin/bash -c "source activate $CONDAENV && nosetests"
+after_success:
+- docker-compose exec web /bin/bash -c "source activate $CONDAENV && codecov --token $CODECOV_TOKEN"
+deploy:
+  provider: script
+  script: ./push_to_hub.sh
+  on:
+    branch: master

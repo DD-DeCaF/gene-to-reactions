@@ -2,12 +2,9 @@ import re
 import gnomic
 from cameo.data import metanetx
 from cameo.core.reaction import Reaction
-from cameo.core.metabolite import Metabolite
-from camilo.strain_to_model import ModelModification
-from .kegg_client import KEGGClient
-import logging
-logging.basicConfig()
-logger = logging.getLogger('genotype-to-model')
+from cameo.api.adapter import ModelModification
+from genotype_to_model.kegg_client import KEGGClient
+from genotype_to_model import logger
 
 
 def full_genotype(genotype_changes: list) -> gnomic.Genotype:
@@ -55,29 +52,6 @@ def map_equation_to_bigg(equation: str, compartment=None):
                 el += compartment
             result.append(el)
     return ' '.join(result)
-
-
-def contains_carbon(metabolite: Metabolite):
-    if not metabolite.formula:
-        raise ValueError("No formula for metabolite {}, it's unknown if there is carbon in it")
-    return 'C' in metabolite.elements
-
-
-def find_metabolite_info(met_id):
-    """Find chemical formula of metabolite in metanetx.chem_prop dictionary
-
-    :param met_id: string of format "<metabolite_id>_<compartment_id>", where <metabolite_id> is a BIGG id or a
-    Metanetx id
-
-    :return:
-    """
-    met_id = met_id[:-2]
-    try:
-        if met_id in metanetx.chem_prop.index:
-            return metanetx.chem_prop.loc[met_id]
-        return metanetx.chem_prop.loc[metanetx.all2mnx['bigg:' + met_id]]
-    except KeyError:
-        return None
 
 
 class GenotypeChangeModel(ModelModification):
