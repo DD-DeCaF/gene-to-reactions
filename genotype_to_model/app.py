@@ -1,5 +1,6 @@
 from flask import Flask, Response, request
 import cobra
+from cameo.core.solver_based_model import to_solver_based_model
 from genotype_to_model.strain_to_model import apply_genotype_changes
 from genotype_to_model.utils import model_by_id
 
@@ -10,10 +11,10 @@ def create_app(settings_object):
 
     @app.route('/model/modify/genotype', methods=['POST'])
     def adjust_model():
-        if 'model-id' in request.args:
+        if 'model-id' in request.values:
             model = model_by_id(request.values['model-id'])
-        elif 'model' in request.args:
-            model = cobra.io.json.from_json(request.values['model'])
+        elif 'model' in request.values:
+            model = to_solver_based_model(cobra.io.json.from_json(request.values['model']))
         else:
             return Response(response="No model is given", status=400)
         return Response(
