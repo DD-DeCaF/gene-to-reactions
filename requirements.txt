@@ -7,3 +7,4 @@ gevent
 flask_script
 flask_cors
 codecov
+grpcio-tools
