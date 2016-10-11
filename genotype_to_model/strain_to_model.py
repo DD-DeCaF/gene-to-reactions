@@ -3,7 +3,7 @@ import gnomic
 from cameo.data import metanetx
 from cameo.core.reaction import Reaction
 from cameo.api.adapter import ModelModification
-from genotype_to_model.kegg_client import KEGGClient
+from genotype_to_model.genomics_client import GenomicsClient
 from genotype_to_model import logger
 
 
@@ -58,7 +58,7 @@ class GenotypeChangeModel(ModelModification):
     """
     Applies genotype change on cameo model
     """
-    def __init__(self, model, genotype_changes, kegg_client):
+    def __init__(self, model, genotype_changes, genomics_client):
         """Initialize change model
 
         :param model: cameo model
@@ -68,7 +68,7 @@ class GenotypeChangeModel(ModelModification):
         self.compartment = '_c'
         self.initial_model = model
         self.model = self.initial_model.copy()
-        self.kegg_client = kegg_client
+        self.genomics_client = genomics_client
         self.knocked_out_genes = set()
         self.added_genes = set()
         self.added_reactions = set()
@@ -135,13 +135,11 @@ class GenotypeChangeModel(ModelModification):
         :return:
         """
         logger.debug('Add gene: {}'.format(feature.name))
-        if not feature.name:
-            logger.debug('Feature {} does not have a name'.format(feature))
-            return
-        if self.model.genes.query(feature.name, attribute='name'):  # do not add if gene is already there
+        identifier = feature.name if feature.name else feature.accession.identifier
+        if self.model.genes.query(identifier, attribute='name'):  # do not add if gene is already there
             logger.debug('Gene {} exists in the model'.format(feature.name))
             return
-        for reaction_id, equation in self.kegg_client.reaction_equations(feature.name).items():
+        for reaction_id, equation in self.genomics_client.reactions_for_dna_component(identifier).items():
             self.add_reaction(reaction_id, equation, feature.name)
         logger.debug('Gene added: {}'.format(feature.name))
 
@@ -174,6 +172,6 @@ def apply_genotype_changes(initial_model, genotype_changes):
     :param genotype_changes: list of strings, f.e. ['-tyrA::kanMX+', 'kanMX-']
     :return:
     """
-    kegg_client = KEGGClient()
+    genomics_client = GenomicsClient()
     logger.debug('Genotype changes {}'.format(genotype_changes))
-    return GenotypeChangeModel(initial_model, full_genotype(genotype_changes), kegg_client).model
+    return GenotypeChangeModel(initial_model, full_genotype(genotype_changes), genomics_client).model
