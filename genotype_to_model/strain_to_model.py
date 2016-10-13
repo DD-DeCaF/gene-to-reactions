@@ -140,8 +140,8 @@ class GenotypeChangeModel(ModelModification):
             logger.debug('Gene {} exists in the model'.format(feature.name))
             return
         for reaction_id, equation in self.genomics_client.reactions_for_dna_component(identifier).items():
-            self.add_reaction(reaction_id, equation, feature.name)
-        logger.debug('Gene added: {}'.format(feature.name))
+            self.add_reaction(reaction_id, equation, identifier)
+        logger.debug('Gene added: {}'.format(identifier))
 
     def add_reaction(self, reaction_id: str, equation: str, gene_name: str):
         """Add new reaction by rn ID from equation, where metabolites defined by kegg ids.

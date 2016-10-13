@@ -3,7 +3,7 @@ import random
 from genotype_to_model.strain_to_model import full_genotype, GenotypeChangeModel
 from cobra.manipulation.delete import find_gene_knockout_reactions
 from genotype_to_model.utils import model_by_id
-from tests.shared.mock_clients import MockKEGGClient, GENES_TO_REACTIONS
+from tests.shared.mock_clients import MockGenomicsClient, GENES_TO_REACTIONS
 
 
 def random_genes_to_knockout(model):
@@ -23,7 +23,7 @@ class TestStrainToModel(unittest.TestCase):
         """If gene is knocked out correctly, reaction's lower and upper bounds should be set to zero"""
         model = wild_model.copy()
         check_knockout_bounds(model, model.genes.b2103, self.assertFalse)
-        model = GenotypeChangeModel(wild_model.copy(), full_genotype(['-thiD']), MockKEGGClient()).model
+        model = GenotypeChangeModel(wild_model.copy(), full_genotype(['-thiD']), MockGenomicsClient()).model
         check_knockout_bounds(model, model.genes.b2103, self.assertTrue)
 
     def test_chains_of_knockouts(self):
@@ -31,7 +31,7 @@ class TestStrainToModel(unittest.TestCase):
         model = wild_model.copy()
         genes = random_genes_to_knockout(model)
         knockout_chain = ['-' + g for g in genes.keys()]
-        model = GenotypeChangeModel(wild_model.copy(), full_genotype(knockout_chain), MockKEGGClient())
+        model = GenotypeChangeModel(wild_model.copy(), full_genotype(knockout_chain), MockGenomicsClient())
         for gene_name, gene_id in genes.items():
             check_knockout_bounds(model.model, getattr(model.model.genes, gene_id), self.assertTrue)
         self.assertTrue(set(genes.keys()) == model.knocked_out_genes)
@@ -40,5 +40,5 @@ class TestStrainToModel(unittest.TestCase):
         """Adding a gene makes the new reactions appear"""
         gene_name = 'pphB'
         for reaction in GENES_TO_REACTIONS[gene_name]:
-            model = GenotypeChangeModel(wild_model.copy(), full_genotype(['+' + gene_name]), MockKEGGClient())
+            model = GenotypeChangeModel(wild_model.copy(), full_genotype(['+' + gene_name]), MockGenomicsClient())
             self.assertTrue(hasattr(model.model.reactions, reaction))

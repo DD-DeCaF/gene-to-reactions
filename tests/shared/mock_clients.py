@@ -14,6 +14,11 @@ class MockKEGGClient(object):
         return {reaction: REACTIONS_TO_EQUATIONS[reaction] for reaction in GENES_TO_REACTIONS[gene_name]}
 
 
+class MockGenomicsClient(object):
+    def reactions_for_dna_component(self, identifier):
+        return {reaction: REACTIONS_TO_EQUATIONS[reaction] for reaction in GENES_TO_REACTIONS[identifier]}
+
+
 class MockRedisClient(object):
     def __init__(self):
         self.dict = {}
