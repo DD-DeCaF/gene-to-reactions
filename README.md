@@ -1,2 +1,2 @@
-[![Build Status](https://travis-ci.com/DD-DeCaF/genotype-to-model.svg?token=Q8emrR3PsSxTz3r6DTDW&branch=master)]()
-[![Codecov](https://codecov.io/gh/DD-DeCaF/genotype-to-model/branch/master/graph/badge.svg?token=akWSAWAtRG)](https://codecov.io/gh/DD-DeCaF/genotype-to-model)
+[![Build Status](https://travis-ci.org/DD-DeCaF/genotype-to-model.svg?branch=master)]()
+[![Codecov](https://codecov.io/gh/DD-DeCaF/genotype-to-model/branch/master/graph/badge.svg)](https://codecov.io/gh/DD-DeCaF/genotype-to-model)
