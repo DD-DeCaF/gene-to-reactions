@@ -159,7 +159,7 @@ class GenotypeChangeModel(ModelModification):
         for metabolite in reaction.metabolites:
             if metabolite.formula is None:  # unknown metabolite
                 self.annotate_new_metabolite(metabolite)
-                self.create_exchange(gene_name, metabolite)
+                self.create_exchange(metabolite)
         reaction.gene_reaction_rule = gene_name
         self.added_genes.add(gene_name)
         self.added_reactions.add(reaction.id)
