@@ -43,8 +43,8 @@ def map_equation_to_bigg(equation: str, compartment=None):
         if not re.match("^[A-Za-z][A-Za-z0-9]*$", el):
             result.append(el)
         else:
-            el = metanetx.all2mnx['kegg:' + el]
             try:
+                el = metanetx.all2mnx['kegg:' + el]
                 el = metanetx.mnx2bigg[el].replace('bigg:', '')
             except KeyError:
                 pass

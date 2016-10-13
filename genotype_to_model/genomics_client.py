@@ -7,11 +7,11 @@ class GenomicsClient(object):
     def __init__(self):
         self.api = '139.59.133.210:50051'  # TODO: service discovery
         self.kegg_client = KEGGClient()
+        self.channel = grpc.insecure_channel(self.api)
+        self.stub = sequences_pb2.SequenceLibraryStub(self.channel)
 
     def get_dna_component(self, identifier):
-        channel = grpc.insecure_channel(self.api)
-        stub = sequences_pb2.SequenceLibraryStub(channel)
-        return stub.GetDNAComponent(sequences_pb2.GetDNAComponentRequest(
+        return self.stub.GetDNAComponent(sequences_pb2.GetDNAComponentRequest(
             accession=identifier
         ))
 
