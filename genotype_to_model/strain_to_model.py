@@ -123,9 +123,9 @@ class GenotypeChangeModel(ModelModification):
         if gene:
             gene[0].knock_out()
             self.knocked_out_genes.add(gene[0].name)
-            logger.debug('Gene knockout: {}'.format(gene[0].name))
+            logger.info('Gene knockout: {}'.format(gene[0].name))
         else:
-            logger.debug('Gene for knockout is not found: {}'.format(feature.name))
+            logger.info('Gene for knockout is not found: {}'.format(feature.name))
 
     def add_gene(self, feature: gnomic.Feature):
         """Perform gene insertion.
@@ -134,14 +134,14 @@ class GenotypeChangeModel(ModelModification):
         :param feature: gnomic.Feature
         :return:
         """
-        logger.debug('Add gene: {}'.format(feature.name))
+        logger.info('Add gene: {}'.format(feature.name))
         identifier = feature.name if feature.name else feature.accession.identifier
         if self.model.genes.query(identifier, attribute='name'):  # do not add if gene is already there
-            logger.debug('Gene {} exists in the model'.format(feature.name))
+            logger.info('Gene {} exists in the model'.format(feature.name))
             return
         for reaction_id, equation in self.genomics_client.reactions_for_dna_component(identifier).items():
             self.add_reaction(reaction_id, equation, identifier)
-        logger.debug('Gene added: {}'.format(identifier))
+        logger.info('Gene added: {}'.format(identifier))
 
     def add_reaction(self, reaction_id: str, equation: str, gene_name: str):
         """Add new reaction by rn ID from equation, where metabolites defined by kegg ids.
@@ -154,7 +154,7 @@ class GenotypeChangeModel(ModelModification):
         reaction = Reaction(reaction_id)
         self.model.add_reactions([reaction])
         equation = map_equation_to_bigg(equation, self.compartment)
-        logger.debug('New reaction: {}'.format(equation))
+        logger.info('New reaction: {}'.format(equation))
         reaction.build_reaction_from_string(equation)
         for metabolite in reaction.metabolites:
             if metabolite.formula is None:  # unknown metabolite
@@ -173,5 +173,5 @@ def apply_genotype_changes(initial_model, genotype_changes):
     :return:
     """
     genomics_client = GenomicsClient()
-    logger.debug('Genotype changes {}'.format(genotype_changes))
+    logger.info('Genotype changes {}'.format(genotype_changes))
     return GenotypeChangeModel(initial_model, full_genotype(genotype_changes), genomics_client).model

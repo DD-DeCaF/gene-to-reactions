@@ -59,7 +59,7 @@ class KEGGClient(object):
         for ko_id in self.reactions_ko_ids(gene_name):
             for rn_id in self.reaction_rn_id(ko_id):
                 result[rn_id] = self.reaction_equation(rn_id)
-        logger.debug('{} reactions found for gene {}'.format(len(result), gene_name))
+        logger.info('{} reactions found for gene {}'.format(len(result), gene_name))
         self.redis.set(gene_name, json.dumps(result))
-        logger.debug("Key is added to redis {}".format(gene_name))
+        logger.info("Key is added to redis {}".format(gene_name))
         return result
