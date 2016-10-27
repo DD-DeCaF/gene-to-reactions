@@ -8,5 +8,5 @@ ADD . ./genotype-to-model
 WORKDIR genotype-to-model
 ENV PYTHONPATH $PYTHONPATH:/genotype-to-model/genotype_to_model/comms
 
-ENTRYPOINT ["gunicorn"]
-CMD ["-w", "4", "-b", "0.0.0.0:8000", "-t", "150", "-k", "gevent", "manage:app"]
+ENTRYPOINT ["python"]
+CMD ["manage.py"]

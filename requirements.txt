@@ -1,10 +1,7 @@
 git+https://github.com/sgalkina/cameo.git@model-modif#egg=cameo
+venom==1.0.0a1
 requests
 redis
 gnomic
-gunicorn
-gevent
-flask_script
-flask_cors
 codecov
 grpcio-tools
