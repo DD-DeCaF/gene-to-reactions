@@ -4,3 +4,4 @@ redis
 gnomic
 codecov
 grpcio-tools
+nose
