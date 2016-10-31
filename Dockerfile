@@ -1,5 +1,4 @@
-FROM biosustain/cameo:cc6a5dbc388f
-RUN apt-get -y update && apt-get install -y git  # TODO: remove after model-modification functionality goes to driven
+FROM python:3.5-slim
 
 ADD requirements.txt requirements.txt
 RUN /bin/bash -c "pip install --upgrade -r requirements.txt"

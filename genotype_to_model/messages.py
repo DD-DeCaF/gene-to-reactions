@@ -4,15 +4,14 @@ from venom.rpc import Stub
 from venom.rpc.stub import RPC
 
 
-class GenotypeRequest(Message):
-    model_id = String()
-    model = String()
-    genotype_changes = Repeat(String())
+class GeneRequest(Message):
+    gene = String()
 
 
-class GenotypeResponse(Message):
-    model = String()
+class ReactionsResponse(Message):  # use Map() field when implemented
+    reactions_ids = Repeat(String())
+    equations = Repeat(String())
 
 
-class GenotypeToModelRemote(Stub):
-    adjust_model = RPC(GenotypeRequest, GenotypeResponse)
+class GeneToReactionsRemote(Stub):
+    reactions = RPC(GeneRequest, ReactionsResponse)

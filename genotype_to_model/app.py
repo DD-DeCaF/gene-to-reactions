@@ -1,24 +1,16 @@
-import cobra
-from cameo.core.solver_based_model import to_solver_based_model
-from genotype_to_model.strain_to_model import apply_genotype_changes
-from genotype_to_model.settings import Default
-from genotype_to_model import logger
 from venom.rpc.method import rpc
-from venom.rpc import Service, Venom
-from genotype_to_model.messages import GenotypeRequest, GenotypeResponse
+from venom.rpc import Service
+from genotype_to_model.messages import GeneRequest, ReactionsResponse
+from genotype_to_model.genomics_client import GenomicsClient
+from genotype_to_model.kegg_client import KEGGClient
 
 
-class GenotypeToModelService(Service):
+class GeneToReactionsService(Service):
     @rpc
-    async def adjust_model(self, request: GenotypeRequest) -> GenotypeResponse:
-        if request.model_id:
-            logger.info('Model from model-id {}'.format(request.model_id))
-            model = Default.MODELS[request.model_id]
-            logger.info('Loaded model with model-id {}'.format(request.model_id))
-        elif request.model:
-            logger.info('Got model in json')
-            model = to_solver_based_model(cobra.io.json.from_json(request.model))
-            logger.info('Loaded model from json')
-        else:
-            raise ValueError('No model is given')
-        return GenotypeResponse(model=cobra.io.json.to_json(apply_genotype_changes(model, request.genotype_changes)))
+    async def reactions(self, request: GeneRequest) -> ReactionsResponse:
+        clients = [GenomicsClient(), KEGGClient()]
+        result = {}
+        for client in clients:
+            result.update(client.reaction_equations(request.gene))
+        reactions_ids, equations = zip(*result.items())
+        return ReactionsResponse(reactions_ids=reactions_ids, equations=equations)

@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 import time
 from venom.rpc.comms.grpc import create_server
-from venom.rpc import Service, Venom
-from genotype_to_model.app import GenotypeToModelService
+from venom.rpc import Venom
+from genotype_to_model.app import GeneToReactionsService
 
 
 app = Venom()
-app.add(GenotypeToModelService)
+app.add(GeneToReactionsService)
 
 server = create_server(app)
 
