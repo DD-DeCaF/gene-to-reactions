@@ -12,5 +12,5 @@ class GeneToReactionsService(Service):
         result = {}
         for client in clients:
             result.update(client.reaction_equations(request.gene))
-        reactions_ids, equations = zip(*result.items())
+        reactions_ids, equations = zip(*result.items()) if result else ([], [])
         return ReactionsResponse(reactions_ids=reactions_ids, equations=equations)
