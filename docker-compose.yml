@@ -9,6 +9,7 @@ web:
   environment:
     - PYTHONUNBUFFERED=1
     - SETTINGS_OBJECT=genotype_to_model.settings.Default
+    - GENOMICS_API
 redis:
   image: redis
   ports:
