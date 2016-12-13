@@ -13,5 +13,5 @@ class ReactionsResponse(Message):  # use Map() field when implemented
     equations = Repeat(String())
 
 
-class GeneToReactionsRemote(Stub):
+class GeneToReactionsStub(Stub):
     reactions = RPC(GeneRequest, ReactionsResponse)

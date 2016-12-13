@@ -1,11 +1,12 @@
 import grpc
 from genotype_to_model.comms.genomics.v1 import sequences_pb2
 from genotype_to_model.kegg_client import KEGGClient
+from genotype_to_model.settings import GENOMICS_API
 
 
 class GenomicsClient(object):
     def __init__(self):
-        self.api = '139.59.133.210:50051'  # TODO: service discovery
+        self.api = GENOMICS_API
         self.kegg_client = KEGGClient()
         self.channel = grpc.insecure_channel(self.api)
         self.stub = sequences_pb2.SequenceLibraryStub(self.channel)
