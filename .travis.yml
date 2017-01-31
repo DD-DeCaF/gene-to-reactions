@@ -13,6 +13,6 @@ after_success:
 - docker-compose exec web /bin/bash -c "codecov --token $CODECOV_TOKEN"
 deploy:
   provider: script
-  script: ./push_to_hub.sh
+  script: ./push_to_hub_travis.sh
   on:
-    branch: master
+    all_branches: true

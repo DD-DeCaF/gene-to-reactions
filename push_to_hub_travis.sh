@@ -2,7 +2,7 @@
 set -ev
 REPO="dddecaf/genotype-to-model"
 GIT_MASTER_HEAD_SHA=$(git rev-parse --short=12 --verify HEAD)
-BRANCH=$(git symbolic-ref --short HEAD)
+BRANCH=$TRAVIS_BRANCH
 docker build -f Dockerfile -t $REPO:$BRANCH .
 docker tag $REPO:$BRANCH $REPO:$GIT_MASTER_HEAD_SHA
 docker push $REPO:$BRANCH
