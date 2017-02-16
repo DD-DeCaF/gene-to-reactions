@@ -1,7 +1,8 @@
-venom==1.0.0a1
+venom==1.0.0a4
 requests
 redis
 gnomic
 codecov
 grpcio-tools
 nose
+git+https://github.com/DD-DeCaF/ice-communication.git#egg=ice

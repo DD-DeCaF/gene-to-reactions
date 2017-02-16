@@ -1,7 +1,8 @@
 from venom.rpc.method import rpc
 from venom.rpc import Service
+
+from genotype_to_model.ice_client import IceClient
 from genotype_to_model.messages import ReactionsResponse, GeneToReactionsStub
-from genotype_to_model.genomics_client import GenomicsClient
 from genotype_to_model.kegg_client import KEGGClient
 
 
@@ -11,7 +12,7 @@ class GeneToReactionsService(Service):
 
     @rpc
     async def reactions(self, gene: str) -> ReactionsResponse:
-        clients = [GenomicsClient(), KEGGClient()]
+        clients = [KEGGClient(), IceClient()]
         result = {}
         for client in clients:
             result.update(client.reaction_equations(gene))

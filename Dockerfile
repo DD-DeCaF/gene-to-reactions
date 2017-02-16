@@ -1,7 +1,9 @@
 FROM python:3.5-slim
+RUN apt-get update
+RUN apt-get install -y git
 
 ADD requirements.txt requirements.txt
-RUN /bin/bash -c "pip install --upgrade -r requirements.txt"
+RUN pip install --upgrade -r requirements.txt
 
 ADD . ./genotype-to-model
 WORKDIR genotype-to-model
