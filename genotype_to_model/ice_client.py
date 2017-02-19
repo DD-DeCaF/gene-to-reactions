@@ -16,6 +16,7 @@ class IceClient(object):
         settings.user_name = os.environ['ICE_USER']
         settings.password = os.environ['ICE_PASSWORD']
         settings.host = os.environ['ICE_HOST']
+        settings.port = os.environ['ICE_PORT']
 
         self.ice_comm = comm.IceCommunication(settings)
         self.kegg_client = KEGGClient()
