@@ -1,22 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import time
-from venom.rpc.comms.grpc import create_server
+
+from aiohttp import web
+from venom.rpc.comms.aiohttp import create_app
 from venom.rpc import Venom
 from genotype_to_model.app import GeneToReactionsService
 
+venom = Venom()
+venom.add(GeneToReactionsService)
 
-app = Venom()
-app.add(GeneToReactionsService)
+app = create_app(venom)
 
-server = create_server(app)
-
-if __name__ == "__main__":
-    server.add_insecure_port('[::]:50053')
-    server.start()
-    print(server)
-    try:
-        while True:
-            time.sleep(24 * 60 * 60)
-    except KeyboardInterrupt:
-        server.stop(0)
+if __name__ == '__main__':
+    web.run_app(app, port=50053)
