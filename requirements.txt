@@ -6,3 +6,4 @@ codecov
 grpcio-tools
 nose
 git+https://github.com/DD-DeCaF/ice-communication.git#egg=ice
+aiohttp
