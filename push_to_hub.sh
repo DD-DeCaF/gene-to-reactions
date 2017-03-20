@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ev
-REPO="dddecaf/genotype-to-model"
+REPO="dddecaf/gene-to-reactions"
 GIT_MASTER_HEAD_SHA=$(git rev-parse --short=12 --verify HEAD)
 BRANCH=$(git symbolic-ref --short HEAD)
 docker build -f Dockerfile -t $REPO:$BRANCH .
