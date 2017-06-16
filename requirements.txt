@@ -1,8 +1,14 @@
-venom==1.0.0a4
+git+https://github.com/biosustain/venom.git@feat/json#egg=venom
 requests
 redis
 gnomic
+aiohttp
+aiozmq
+aiohttp_cors
 codecov
-grpcio-tools
+gunicorn
+uvloop
+pytest-asyncio==0.5.0
+pytest-cov==2.4.0
 nose
 git+https://github.com/DD-DeCaF/ice-communication.git#egg=ice

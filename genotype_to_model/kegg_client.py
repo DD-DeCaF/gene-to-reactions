@@ -9,8 +9,9 @@ from genotype_to_model import logger
 def find_reaction_id(row):
     """Find reaction id in the row assuming that it starts with K and all the other symbols are digits"""
     for element in row:
-        if element[0] == 'K' and element[1:].isdigit():
-            return element
+        for part in element.split():
+            if part[0] == 'K' and part[1:].isdigit():
+                return part
 
 
 class KEGGClient(object):

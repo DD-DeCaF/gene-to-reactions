@@ -4,13 +4,15 @@ web:
   links:
     - redis
   ports:
-    - 8000:8000
-    - 50053:50053
+    - 6500:6500
   environment:
+    - ICE_HOST
+    - ICE_PASSWORD
+    - ICE_PORT
+    - ICE_USER
     - PYTHONUNBUFFERED=1
     - SETTINGS_OBJECT=genotype_to_model.settings.Default
-    - GENOMICS_API
 redis:
   image: redis
   ports:
-    - 6379:6379
+    - 6379
