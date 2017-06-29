@@ -21,12 +21,16 @@ class IceClient(object):
         self.ice_comm = comm.IceCommunication(settings)
         self.kegg_client = KEGGClient()
 
-    def reaction_equations(self, genotype):
+    async def reaction_equations(self, genotype):
         id_list = self.get_kegg_ids(genotype)
 
         result = {}
         for reaction_id in id_list:
-            result[reaction_id] = self.kegg_client.reaction_equation(reaction_id)
+            if ':' in reaction_id:
+                reaction_id, reaction_string = reaction_id.split(':')
+            else:
+                reaction_string = await self.kegg_client.reaction_equation(reaction_id)
+            result[reaction_id] = reaction_string
 
         return result
 
@@ -47,6 +51,8 @@ class IceClient(object):
             for param in part[param_key]:
                 if id_key == param['name']:
                     id_list.extend(param['value'].split(','))
+        if part['references']:
+            id_list.extend(part['references'].split(','))
 
         return id_list
 

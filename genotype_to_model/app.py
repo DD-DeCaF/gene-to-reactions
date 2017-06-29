@@ -8,7 +8,6 @@ from venom.fields import MapField, String
 from venom.message import Message
 from genotype_to_model import logger
 from genotype_to_model.ice_client import IceClient
-from genotype_to_model.kegg_client import KEGGClient
 
 
 class GeneMessage(Message):
@@ -25,12 +24,9 @@ class AnnotationService(Service):
 
     @http.GET('./genes',
               description='Return reactions for the given gene identifier. '
-                          'If gene is not found in ICE library, KEGG database is queried')
+                          'Queries ICE library')
     async def reactions(self, request: GeneMessage) -> AnnotationMessage:
-        clients = [KEGGClient(), IceClient()]
-        result = {}
-        for client in clients:
-            result.update(client.reaction_equations(request.gene_id))
+        result = await IceClient().reaction_equations(request.gene_id)
         return AnnotationMessage(response=result)
 
 
