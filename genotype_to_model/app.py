@@ -1,4 +1,5 @@
 import asyncio
+from aiohttp import web
 import aiohttp_cors
 from venom.rpc import Service, Venom
 from venom.rpc.comms.aiohttp import create_app
@@ -8,6 +9,8 @@ from venom.fields import MapField, String
 from venom.message import Message
 from genotype_to_model import logger
 from genotype_to_model.ice_client import IceClient
+
+from .middleware import raven_middleware
 
 
 class GeneMessage(Message):
@@ -33,7 +36,7 @@ class AnnotationService(Service):
 venom = Venom(version='0.1.0', title='GenesToReactions')
 venom.add(AnnotationService)
 venom.add(ReflectService)
-app = create_app(venom)
+app = create_app(venom, web.Application(middlewares=[raven_middleware]))
 # Configure default CORS settings.
 cors = aiohttp_cors.setup(app, defaults={
     "*": aiohttp_cors.ResourceOptions(
