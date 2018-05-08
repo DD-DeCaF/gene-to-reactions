@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gene-to-reactions-production
+spec:
+  selector:
+    matchLabels:
+      app: gene-to-reactions
+      env: production
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gene-to-reactions
+        env: production
+    spec:
+      containers:
+      - name: web
+        image: gcr.io/dd-decaf-cfbf6/gene-to-reactions:master
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ICE_HOST
+          value: ice.dd-decaf.eu
+        - name: ICE_PORT
+          value: "443"
+        - name: SETTINGS_OBJECT
+          value: genotype_to_model.settings.Default
+        - name: ICE_USER
+          valueFrom:
+            secretKeyRef:
+              name: gene-to-reactions-production
+              key: ICE_USER
+        - name: ICE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gene-to-reactions-production
+              key: ICE_PASSWORD
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: gene-to-reactions-production
+              key: SENTRY_DSN
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: 6379
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gene-to-reactions-staging
+spec:
+  selector:
+    matchLabels:
+      app: gene-to-reactions
+      env: staging
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gene-to-reactions
+        env: staging
+    spec:
+      containers:
+      - name: web
+        image: gcr.io/dd-decaf-cfbf6/gene-to-reactions:devel
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ICE_HOST
+          value: ice-staging.dd-decaf.eu
+        - name: ICE_PORT
+          value: "443"
+        - name: SETTINGS_OBJECT
+          value: genotype_to_model.settings.Default
+        - name: ICE_USER
+          valueFrom:
+            secretKeyRef:
+              name: gene-to-reactions-staging
+              key: ICE_USER
+        - name: ICE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: gene-to-reactions-staging
+              key: ICE_PASSWORD
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: gene-to-reactions-staging
+              key: SENTRY_DSN
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: 6379
