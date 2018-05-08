@@ -11,5 +11,4 @@ RUN pip install --upgrade -r requirements.txt
 ADD . ./genotype-to-model
 WORKDIR genotype-to-model
 
-ENTRYPOINT ["gunicorn"]
-CMD ["-w", "4", "-b", "0.0.0.0:8000", "-t", "150", "-k", "aiohttp.worker.GunicornWebWorker", "genotype_to_model.app:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "-t", "150", "-k", "aiohttp.worker.GunicornWebWorker", "genotype_to_model.app:app"]
