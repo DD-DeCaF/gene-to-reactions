@@ -41,10 +41,22 @@ spec:
             secretKeyRef:
               name: gene-to-reactions-production
               key: SENTRY_DSN
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
       - name: redis
         image: redis:latest
         ports:
         - containerPort: 6379
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "256Mi"
+          limits:
+            cpu: "100m"
 
 ---
 
@@ -91,7 +103,17 @@ spec:
             secretKeyRef:
               name: gene-to-reactions-staging
               key: SENTRY_DSN
+        resources:
+          requests:
+            cpu: "5m"
+          limits:
+            cpu: "100m"
       - name: redis
         image: redis:latest
         ports:
         - containerPort: 6379
+        resources:
+          requests:
+            cpu: "5m"
+          limits:
+            cpu: "100m"
