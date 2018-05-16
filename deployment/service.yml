@@ -1,0 +1,41 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: gene-to-reactions-production
+  annotations:
+    prometheus.io/probe: "true"
+spec:
+  selector:
+    app: gene-to-reactions
+    env: production
+  ports:
+  - name: web
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+  - name: redis
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: gene-to-reactions-staging
+  annotations:
+    prometheus.io/probe: "true"
+spec:
+  selector:
+    app: gene-to-reactions
+    env: staging
+  ports:
+  - name: web
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+  - name: redis
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
