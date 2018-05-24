@@ -21,7 +21,7 @@ spec:
         - containerPort: 8000
         env:
         - name: ICE_HOST
-          value: ice.dd-decaf.eu
+          value: ice
         - name: ICE_PORT
           value: "443"
         - name: SETTINGS_OBJECT
@@ -83,7 +83,7 @@ spec:
         - containerPort: 8000
         env:
         - name: ICE_HOST
-          value: ice-staging.dd-decaf.eu
+          value: ice
         - name: ICE_PORT
           value: "443"
         - name: SETTINGS_OBJECT
