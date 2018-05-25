@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import logging
 from aiohttp import web
 import aiohttp_cors
 from venom.rpc import Service, Venom
@@ -21,11 +22,12 @@ from venom.rpc.method import http
 from venom.rpc.reflect.service import ReflectService
 from venom.fields import MapField, String
 from venom.message import Message
-from gene_to_reactions import logger
 from gene_to_reactions.ice_client import IceClient
 
 from .middleware import raven_middleware
 
+
+logger = logging.getLogger(__name__)
 
 class GeneMessage(Message):
     gene_id = String(description='Gene identifier')

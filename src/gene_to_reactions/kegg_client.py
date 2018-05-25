@@ -19,7 +19,10 @@ import csv
 import os
 import json
 import redis
-from gene_to_reactions import logger
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def find_reaction_id(row):
