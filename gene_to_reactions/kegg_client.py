@@ -19,7 +19,7 @@ import csv
 import os
 import json
 import redis
-from genotype_to_model import logger
+from gene_to_reactions import logger
 
 
 def find_reaction_id(row):

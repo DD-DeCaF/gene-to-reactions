@@ -11,7 +11,7 @@ web:
     - ICE_PORT
     - ICE_USER
     - PYTHONUNBUFFERED=1
-    - SETTINGS_OBJECT=genotype_to_model.settings.Default
+    - SETTINGS_OBJECT=gene_to_reactions.settings.Default
 redis:
   image: redis
   ports:

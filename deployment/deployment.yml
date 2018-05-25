@@ -25,7 +25,7 @@ spec:
         - name: ICE_PORT
           value: "443"
         - name: SETTINGS_OBJECT
-          value: genotype_to_model.settings.Default
+          value: gene_to_reactions.settings.Default
         - name: ICE_USER
           valueFrom:
             secretKeyRef:
@@ -87,7 +87,7 @@ spec:
         - name: ICE_PORT
           value: "443"
         - name: SETTINGS_OBJECT
-          value: genotype_to_model.settings.Default
+          value: gene_to_reactions.settings.Default
         - name: ICE_USER
           valueFrom:
             secretKeyRef:

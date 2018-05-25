@@ -21,8 +21,8 @@ from venom.rpc.method import http
 from venom.rpc.reflect.service import ReflectService
 from venom.fields import MapField, String
 from venom.message import Message
-from genotype_to_model import logger
-from genotype_to_model.ice_client import IceClient
+from gene_to_reactions import logger
+from gene_to_reactions.ice_client import IceClient
 
 from .middleware import raven_middleware
 

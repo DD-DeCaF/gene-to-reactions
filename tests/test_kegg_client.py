@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import unittest
-from genotype_to_model.kegg_client import KEGGClient
+from gene_to_reactions.kegg_client import KEGGClient
 
 
 class TestKeggClient(unittest.TestCase):

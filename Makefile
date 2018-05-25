@@ -36,7 +36,7 @@ test-travis:
 
 ## Verify source code license headers.
 license:
-	-./scripts/verify_license_headers.sh genotype_to_model tests
+	-./scripts/verify_license_headers.sh gene_to_reactions tests
 
 ## Stop all services.
 stop:

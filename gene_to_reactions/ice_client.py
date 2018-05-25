@@ -19,7 +19,7 @@ from urllib.error import HTTPError
 from ice import comm
 from ice.settings import IceSettings
 
-from genotype_to_model.kegg_client import KEGGClient
+from gene_to_reactions.kegg_client import KEGGClient
 
 
 class IceClient(object):

@@ -8,7 +8,7 @@ RUN apt-get install -y git
 ADD requirements.txt requirements.txt
 RUN pip install --upgrade -r requirements.txt
 
-ADD . ./genotype-to-model
-WORKDIR genotype-to-model
+COPY . /app
+WORKDIR /app
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "-t", "150", "-k", "aiohttp.worker.GunicornWebWorker", "genotype_to_model.app:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "-t", "150", "-k", "aiohttp.worker.GunicornWebWorker", "gene_to_reactions.app:app"]
