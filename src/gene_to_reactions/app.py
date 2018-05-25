@@ -67,7 +67,7 @@ for route in list(app.router.routes()):
 
 
 async def start(loop):
-    await loop.create_server(app.make_handler(), '0.0.0.0', 6500)
+    await loop.create_server(app.make_handler(), '0.0.0.0', 8000)
     logger.info('Web server is up')
 
 
