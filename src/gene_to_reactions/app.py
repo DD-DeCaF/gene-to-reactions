@@ -32,6 +32,9 @@ from .middleware import raven_middleware
 
 logger = logging.getLogger(__name__)
 
+REQ_TIME = prometheus_client.Histogram('decaf_http_request_duration_seconds',
+    "Time spent in request", ['service', 'endpoint'])
+
 class GeneMessage(Message):
     gene_id = String(description='Gene identifier')
 
@@ -48,8 +51,9 @@ class AnnotationService(Service):
               description='Return reactions for the given gene identifier. '
                           'Queries ICE library')
     async def reactions(self, request: GeneMessage) -> AnnotationMessage:
-        result = await IceClient().reaction_equations(request.gene_id)
-        return AnnotationMessage(response=result)
+        with REQ_TIME.labels(service='gene-to-reactions', endpoint='/annotation/genes').time():
+            result = await IceClient().reaction_equations(request.gene_id)
+            return AnnotationMessage(response=result)
 
 async def metrics(request):
     resp = web.Response(body=prometheus_client.generate_latest(MultiProcessCollector(CollectorRegistry())))
