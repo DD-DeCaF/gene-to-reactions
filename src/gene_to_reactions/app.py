@@ -23,6 +23,9 @@ from venom.rpc.reflect.service import ReflectService
 from venom.fields import MapField, String
 from venom.message import Message
 from gene_to_reactions.ice_client import IceClient
+import prometheus_client
+from prometheus_client import CollectorRegistry
+from prometheus_client.multiprocess import MultiProcessCollector
 
 from .middleware import raven_middleware
 
@@ -48,11 +51,17 @@ class AnnotationService(Service):
         result = await IceClient().reaction_equations(request.gene_id)
         return AnnotationMessage(response=result)
 
+async def metrics(request):
+    resp = web.Response(body=prometheus_client.generate_latest(MultiProcessCollector(CollectorRegistry())))
+    resp.content_type = prometheus_client.CONTENT_TYPE_LATEST
+    return resp
+
 
 venom = Venom(version='0.1.0', title='GenesToReactions')
 venom.add(AnnotationService)
 venom.add(ReflectService)
 app = create_app(venom, web.Application(middlewares=[raven_middleware]))
+app.router.add_get("/metrics", metrics)
 # Configure default CORS settings.
 cors = aiohttp_cors.setup(app, defaults={
     "*": aiohttp_cors.ResourceOptions(

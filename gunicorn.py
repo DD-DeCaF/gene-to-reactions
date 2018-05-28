@@ -17,6 +17,9 @@
 
 import os
 
+from prometheus_client import multiprocess
+
+
 _config = os.environ["ENVIRONMENT"]
 
 bind = "0.0.0.0:8000"
@@ -24,6 +27,8 @@ worker_class = "aiohttp.worker.GunicornWebWorker"
 timeout = 20
 accesslog = "-"
 
+def child_exit(server, worker):
+    multiprocess.mark_process_dead(worker.pid)
 
 if _config == "production":
     workers = os.cpu_count() * 2 + 1
