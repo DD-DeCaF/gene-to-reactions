@@ -101,6 +101,8 @@ spec:
           value: "443"
         - name: SETTINGS_OBJECT
           value: gene_to_reactions.settings.Default
+        - name: prometheus_multiproc_dir
+          value: /prometheus-client
         - name: ICE_USER
           valueFrom:
             secretKeyRef:
