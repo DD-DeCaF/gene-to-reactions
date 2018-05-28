@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.2"
 services:
   web:
     build: .
@@ -14,6 +14,8 @@ services:
       - redis
     volumes:
       - ".:/app"
+      - type: tmpfs
+        target: "/prometheus-client"
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
       - SETTINGS_OBJECT=gene_to_reactions.settings.Default
@@ -21,6 +23,7 @@ services:
       - ICE_PORT=${ICE_PORT:-443}
       - ICE_PASSWORD=${ICE_PASSWORD}
       - ICE_USER=${ICE_USER}
+      - prometheus_multiproc_dir=/prometheus-client
     command: gunicorn -c gunicorn.py gene_to_reactions.app:app
 
   redis:
