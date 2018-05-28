@@ -48,6 +48,7 @@ spec:
         volumeMounts:
         - mountPath: /prometheus-client
           name: prometheus-client
+        command: ["gunicorn", "-c", "gunicorn.py", "gene_to_reactions.app:app"]
         resources:
           requests:
             cpu: "10m"
@@ -118,6 +119,7 @@ spec:
         volumeMounts:
         - mountPath: /prometheus-client
           name: prometheus-client
+        command: ["gunicorn", "-c", "gunicorn.py", "gene_to_reactions.app:app"]
         resources:
           requests:
             cpu: "5m"
