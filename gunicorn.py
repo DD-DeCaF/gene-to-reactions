@@ -33,7 +33,7 @@ def child_exit(server, worker):
 if _config in ['production', 'staging']:
     workers = os.cpu_count() * 2 + 1
     loglevel = "DEBUG"
-elif _config == 'development':
+elif _config in ['testing', 'development']:
     workers = 1
     reload = True
     loglevel = "DEBUG"
