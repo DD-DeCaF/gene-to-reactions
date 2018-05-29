@@ -28,6 +28,8 @@ spec:
           value: "443"
         - name: SETTINGS_OBJECT
           value: gene_to_reactions.settings.Default
+        - name: prometheus_multiproc_dir
+          value: /prometheus-client
         - name: ICE_USER
           valueFrom:
             secretKeyRef:
@@ -43,6 +45,10 @@ spec:
             secretKeyRef:
               name: gene-to-reactions-production
               key: SENTRY_DSN
+        volumeMounts:
+        - mountPath: /prometheus-client
+          name: prometheus-client
+        command: ["gunicorn", "-c", "gunicorn.py", "gene_to_reactions.app:app"]
         resources:
           requests:
             cpu: "10m"
@@ -59,6 +65,9 @@ spec:
             memory: "256Mi"
           limits:
             cpu: "100m"
+      volumes:
+      - name: prometheus-client
+        emptyDir: {}
 
 ---
 
@@ -92,6 +101,8 @@ spec:
           value: "443"
         - name: SETTINGS_OBJECT
           value: gene_to_reactions.settings.Default
+        - name: prometheus_multiproc_dir
+          value: /prometheus-client
         - name: ICE_USER
           valueFrom:
             secretKeyRef:
@@ -107,6 +118,10 @@ spec:
             secretKeyRef:
               name: gene-to-reactions-staging
               key: SENTRY_DSN
+        volumeMounts:
+        - mountPath: /prometheus-client
+          name: prometheus-client
+        command: ["gunicorn", "-c", "gunicorn.py", "gene_to_reactions.app:app"]
         resources:
           requests:
             cpu: "5m"
@@ -121,3 +136,6 @@ spec:
             cpu: "5m"
           limits:
             cpu: "100m"
+      volumes:
+      - name: prometheus-client
+        emptyDir: {}

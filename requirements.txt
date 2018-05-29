@@ -13,3 +13,4 @@ pytest-cov==2.4.0
 nose
 git+https://github.com/DD-DeCaF/ice-communication.git#egg=ice
 raven==6.4.0
+prometheus-client

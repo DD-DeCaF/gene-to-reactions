@@ -23,11 +23,15 @@ from venom.rpc.reflect.service import ReflectService
 from venom.fields import MapField, String
 from venom.message import Message
 from gene_to_reactions.ice_client import IceClient
+from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, generate_latest, Histogram
+from prometheus_client.multiprocess import MultiProcessCollector
 
 from .middleware import raven_middleware
 
 
 logger = logging.getLogger(__name__)
+
+REQ_TIME = Histogram('decaf_http_request_duration_seconds', "Time spent in request", ['service', 'endpoint'])
 
 class GeneMessage(Message):
     gene_id = String(description='Gene identifier')
@@ -45,14 +49,21 @@ class AnnotationService(Service):
               description='Return reactions for the given gene identifier. '
                           'Queries ICE library')
     async def reactions(self, request: GeneMessage) -> AnnotationMessage:
-        result = await IceClient().reaction_equations(request.gene_id)
-        return AnnotationMessage(response=result)
+        with REQ_TIME.labels(service='gene-to-reactions', endpoint='/annotation/genes').time():
+            result = await IceClient().reaction_equations(request.gene_id)
+            return AnnotationMessage(response=result)
+
+async def metrics(request):
+    resp = web.Response(body=generate_latest(MultiProcessCollector(CollectorRegistry())))
+    resp.content_type = CONTENT_TYPE_LATEST
+    return resp
 
 
 venom = Venom(version='0.1.0', title='GenesToReactions')
 venom.add(AnnotationService)
 venom.add(ReflectService)
 app = create_app(venom, web.Application(middlewares=[raven_middleware]))
+app.router.add_get("/metrics", metrics)
 # Configure default CORS settings.
 cors = aiohttp_cors.setup(app, defaults={
     "*": aiohttp_cors.ResourceOptions(
