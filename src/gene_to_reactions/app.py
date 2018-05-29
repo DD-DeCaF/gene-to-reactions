@@ -23,8 +23,7 @@ from venom.rpc.reflect.service import ReflectService
 from venom.fields import MapField, String
 from venom.message import Message
 from gene_to_reactions.ice_client import IceClient
-import prometheus_client
-from prometheus_client import CollectorRegistry
+from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, generate_latest, Histogram
 from prometheus_client.multiprocess import MultiProcessCollector
 
 from .middleware import raven_middleware
@@ -32,8 +31,7 @@ from .middleware import raven_middleware
 
 logger = logging.getLogger(__name__)
 
-REQ_TIME = prometheus_client.Histogram('decaf_http_request_duration_seconds',
-    "Time spent in request", ['service', 'endpoint'])
+REQ_TIME = Histogram('decaf_http_request_duration_seconds', "Time spent in request", ['service', 'endpoint'])
 
 class GeneMessage(Message):
     gene_id = String(description='Gene identifier')
@@ -56,8 +54,8 @@ class AnnotationService(Service):
             return AnnotationMessage(response=result)
 
 async def metrics(request):
-    resp = web.Response(body=prometheus_client.generate_latest(MultiProcessCollector(CollectorRegistry())))
-    resp.content_type = prometheus_client.CONTENT_TYPE_LATEST
+    resp = web.Response(body=generate_latest(MultiProcessCollector(CollectorRegistry())))
+    resp.content_type = CONTENT_TYPE_LATEST
     return resp
 
 
