@@ -94,7 +94,7 @@ spec:
         - containerPort: 8000
         env:
         - name: ENVIRONMENT
-          value: production
+          value: staging
         - name: ICE_HOST
           value: ice
         - name: ICE_PORT

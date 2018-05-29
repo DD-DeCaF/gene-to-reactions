@@ -30,10 +30,12 @@ accesslog = "-"
 def child_exit(server, worker):
     multiprocess.mark_process_dead(worker.pid)
 
-if _config == "production":
+if _config in ['production', 'staging']:
     workers = os.cpu_count() * 2 + 1
     loglevel = "DEBUG"
-else:
+elif _config == 'development':
     workers = 1
     reload = True
     loglevel = "DEBUG"
+else:
+    raise KeyError(f"Unrecognized environment '{_config}'")
