@@ -14,6 +14,7 @@
 
 import os
 
+ENVIRONMENT = os.environ['ENVIRONMENT']
 SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
 
 LOGGING = {
