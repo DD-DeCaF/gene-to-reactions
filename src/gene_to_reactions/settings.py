@@ -15,6 +15,8 @@
 import os
 
 ENVIRONMENT = os.environ['ENVIRONMENT']
+assert ENVIRONMENT in ('production', 'staging', 'testing', 'development')
+
 SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
 
 LOGGING = {

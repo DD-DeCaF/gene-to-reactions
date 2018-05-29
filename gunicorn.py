@@ -37,5 +37,3 @@ elif _config in ['testing', 'development']:
     workers = 1
     reload = True
     loglevel = "DEBUG"
-else:
-    raise KeyError(f"Unrecognized environment '{_config}'")
