@@ -26,6 +26,7 @@ from gene_to_reactions.ice_client import IceClient
 from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, generate_latest, Histogram
 from prometheus_client.multiprocess import MultiProcessCollector
 
+from . import settings
 from .middleware import raven_middleware
 
 
