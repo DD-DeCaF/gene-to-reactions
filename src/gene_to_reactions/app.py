@@ -32,7 +32,7 @@ from .middleware import raven_middleware
 
 logger = logging.getLogger(__name__)
 
-REQ_TIME = Histogram('decaf_http_request_duration_seconds', "Time spent in request", ['service', 'environment', 'endpoint'])
+REQ_TIME = Histogram('decaf_request_handler_duration_seconds', "Time spent in request", ['service', 'environment', 'endpoint'])
 
 class GeneMessage(Message):
     gene_id = String(description='Gene identifier')
