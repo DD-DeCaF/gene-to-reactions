@@ -32,7 +32,12 @@ from .middleware import raven_middleware
 
 logger = logging.getLogger(__name__)
 
-REQ_TIME = Histogram('decaf_request_handler_duration_seconds', "Time spent in request", ['service', 'environment', 'endpoint'])
+# REQUEST_TIME: Time spent waiting for outgoing API request to internal or external services
+# labels:
+#   service: The current service (always 'gene-to-reactions')
+#   environment: The current runtime environment ('production' or 'staging')
+#   endpoint: The path to the requested endpoint without query parameters (e.g. '/annotation/genes')
+REQUEST_TIME = Histogram('decaf_request_handler_duration_seconds', "Time spent in request", ['service', 'environment', 'endpoint'])
 
 class GeneMessage(Message):
     gene_id = String(description='Gene identifier')
@@ -50,7 +55,7 @@ class AnnotationService(Service):
               description='Return reactions for the given gene identifier. '
                           'Queries ICE library')
     async def reactions(self, request: GeneMessage) -> AnnotationMessage:
-        with REQ_TIME.labels(service='gene-to-reactions', environment=settings.ENVIRONMENT,
+        with REQUEST_TIME.labels(service='gene-to-reactions', environment=settings.ENVIRONMENT,
                              endpoint='/annotation/genes').time():
             result = await IceClient().reaction_equations(request.gene_id)
             return AnnotationMessage(response=result)
