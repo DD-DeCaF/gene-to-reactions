@@ -17,6 +17,7 @@ spec:
       containers:
       - name: web
         image: gcr.io/dd-decaf-cfbf6/gene-to-reactions:master
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
@@ -90,6 +91,7 @@ spec:
       containers:
       - name: web
         image: gcr.io/dd-decaf-cfbf6/gene-to-reactions:devel
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
