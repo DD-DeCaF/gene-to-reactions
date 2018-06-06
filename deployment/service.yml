@@ -5,7 +5,6 @@ metadata:
   annotations:
     prometheus.io/probe: "true"
     prometheus.io/scrape: "true"
-    prometheus.io/path: "/metrics"
     prometheus.io/port: "8000"
 spec:
   selector:
@@ -26,7 +25,6 @@ metadata:
   annotations:
     prometheus.io/probe: "true"
     prometheus.io/scrape: "true"
-    prometheus.io/path: "/metrics"
     prometheus.io/port: "8000"
 spec:
   selector:
