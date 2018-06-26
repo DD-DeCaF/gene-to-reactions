@@ -24,7 +24,7 @@ _config = os.environ["ENVIRONMENT"]
 
 bind = "0.0.0.0:8000"
 worker_class = "aiohttp.worker.GunicornWebWorker"
-timeout = 20
+timeout = 240  # FIXME: long timeout to account for slow ICE requests
 accesslog = "-"
 
 def child_exit(server, worker):

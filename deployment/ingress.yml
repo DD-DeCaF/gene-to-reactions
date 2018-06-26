@@ -4,6 +4,8 @@ metadata:
   name: gene-to-reactions
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "240"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "240"
 spec:
   tls:
   - hosts:
