@@ -49,7 +49,7 @@ class AnnotationMessage(Message):
 
 class AnnotationService(Service):
     class Meta:
-        name = 'annotation'
+        name = 'gene-to-reactions/annotation'
 
     @http.GET('./genes',
               description='Return reactions for the given gene identifier. '
