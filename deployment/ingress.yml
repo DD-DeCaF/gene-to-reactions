@@ -19,10 +19,3 @@ spec:
         backend:
           serviceName: gene-to-reactions-production
           servicePort: 80
-  - host: api-staging.dd-decaf.eu
-    http:
-      paths:
-      - path: /gene-to-reactions
-        backend:
-          serviceName: gene-to-reactions-staging
-          servicePort: 80

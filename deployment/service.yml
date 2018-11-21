@@ -14,22 +14,3 @@ spec:
     protocol: TCP
     port: 80
     targetPort: 8000
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  name: gene-to-reactions-staging
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "8000"
-spec:
-  selector:
-    app: gene-to-reactions
-    env: staging
-  ports:
-  - name: web
-    protocol: TCP
-    port: 80
-    targetPort: 8000

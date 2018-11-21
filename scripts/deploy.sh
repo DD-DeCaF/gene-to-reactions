@@ -18,8 +18,6 @@ set -xeu
 
 if [ "${TRAVIS_BRANCH}" = "master" ]; then
   DEPLOYMENT=gene-to-reactions-production
-elif [ "${TRAVIS_BRANCH}" = "devel" ]; then
-  DEPLOYMENT=gene-to-reactions-staging
 else
   echo "Skipping deployment for branch ${TRAVIS_BRANCH}"
   exit 0
