@@ -53,9 +53,8 @@ spec:
         resources:
           requests:
             cpu: "10m"
-            memory: "128Mi"
           limits:
-            cpu: "500m"
+            cpu: "1000m"
       - name: redis
         image: redis:latest
         ports:
@@ -63,9 +62,8 @@ spec:
         resources:
           requests:
             cpu: "10m"
-            memory: "256Mi"
           limits:
-            cpu: "100m"
+            cpu: "1000m"
       volumes:
       - name: prometheus-client
         emptyDir: {}
