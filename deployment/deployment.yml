@@ -51,8 +51,6 @@ spec:
           name: prometheus-client
         command: ["gunicorn", "-c", "gunicorn.py", "gene_to_reactions.app:app"]
         resources:
-          requests:
-            cpu: "10m"
           limits:
             cpu: "1000m"
       - name: redis
@@ -60,8 +58,6 @@ spec:
         ports:
         - containerPort: 6379
         resources:
-          requests:
-            cpu: "10m"
           limits:
             cpu: "1000m"
       volumes:
